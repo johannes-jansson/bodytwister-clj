@@ -1,0 +1,31 @@
+/* some style */
+body {
+  background-color: #EEEEEE;
+}
+h1, h2, h3, h4, h5, p {
+  color: #333333;
+}
+
+#highscore {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+}
+
+#score {
+  position: absolute;
+  top: 1em;
+  left: 1em;
+}
+
+#pair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+#buttons {
+  position: absolute;
+  bottom: 1em;
+  left: 50%;
+}
