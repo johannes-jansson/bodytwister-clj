@@ -5,20 +5,47 @@
   --darker-green: #4da976;
   --main-red: #b95141;
   --darker-red: #973b2e;
+  --main-blue: #6c8fcc;
+  --darker-blue: #4179b9;
 }
 
-body {
-  background: linear-gradient(0deg, var(--darker-green) 0%, var(--main-green) 30%, var(--main-green) 100%);
-  /* background: linear-gradient(0deg, var(--darker-red) 0%, var(--main-red) 30%, var(--main-red) 100%); */
+html,
+body,
+#app,
+#component {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  margin: 0;
+  padding: 0;
+  font: normal 1em Verdana, Arial, sans-serif;
 }
 
-html {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
+.green {
+  background: linear-gradient(
+    0deg,
+    var(--darker-green) 0%,
+    var(--main-green) 30%,
+    var(--main-green) 100%
+  );
+}
+
+.red {
+  background: linear-gradient(
+    0deg,
+    var(--darker-red) 0%,
+    var(--main-red) 30%,
+    var(--main-red) 100%
+  );
+}
+
+.blue {
+  background: linear-gradient(
+    0deg,
+    var(--darker-blue) 0%,
+    var(--main-blue) 30%,
+    var(--main-blue) 100%
+  );
 }
 
 p {
@@ -26,46 +53,55 @@ p {
   color: #333333;
 }
 
-#highscore {
-  position: absolute;
-  top: 1em;
-  right: 1em;
-}
-
 #score {
   position: absolute;
   top: 1em;
   left: 1em;
+  margin: 0;
+  padding: 0;
+}
+
+#highscore {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  margin: 0;
+  padding: 0;
 }
 
 #gameover {
   position: absolute;
   top: 50%;
   left: 50%;
+  transform: translateX(-50%);
 }
 
 #startscreen {
   position: absolute;
   top: 50%;
   left: 50%;
+  transform: translateX(-50%);
 }
 
 #instructions {
   position: absolute;
   top: 50%;
   left: 50%;
+  transform: translateX(-50%);
 }
 
 #current-pair {
   position: absolute;
   top: 50%;
   left: 50%;
+  transform: translateX(-50%);
 }
 
 #buttons {
   position: absolute;
   bottom: 1em;
   left: 50%;
+  transform: translateX(-50%);
 }
 
 #first,
@@ -73,4 +109,12 @@ p {
 #last {
   float: left;
   font-size: 4em;
+  margin: 10px;
+  padding: 10px;
+}
+#first,
+#last {
+  border: 1px solid black;
+  border-radius: 5px;
+  background: white;
 }

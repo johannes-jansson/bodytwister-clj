@@ -32,6 +32,7 @@
                       :highscore 0
                       :gameover 0
                       :started 0
+                      :color "blue"
                       :instructions 0
                       :pair []}))
 
@@ -50,6 +51,7 @@
 (defn start-game []
   (replace-current-pair)
   (swap! app-state assoc :instructions 0)
+  (swap! app-state assoc :color "green")
   (swap! app-state assoc :started 1)
   )
 
@@ -60,28 +62,30 @@
 (defn end-game []
   (println "gameover")
   (swap! app-state assoc :pair [])
+  (swap! app-state assoc :color "red")
   (if (> (get @app-state :points) (get @app-state :highscore))
     (swap! app-state assoc :highscore (get @app-state :points)))
   (swap! app-state assoc :gameover 1))
 
 (defn start-over []
   (swap! app-state assoc :points -1)
+  (swap! app-state assoc :color "green")
   (replace-current-pair)
   (swap! app-state assoc :gameover 0))
 
 ; getters/renderers
+(defn get-current-score []
+  [:div {:id "score"}
+   [:p (if (= (get @app-state :points) -1)
+         (str "-")
+         (str (get @app-state :points)))]])
+
 (defn get-highscore []
   [:div {:id "highscore"}
    [:p (str "Highscore: "
             (if (= (get @app-state :highscore) 0)
               (str "-")
               (str(get @app-state :highscore))))]])
-
-(defn get-current-score []
-  [:div {:id "score"}
-   [:p (if (= (get @app-state :points) -1)
-         (str "-")
-         (str (get @app-state :points)))]])
 
 (defn get-startscreen []
   (if (and (= (get @app-state :started) 0) (= (get @app-state :instructions) 0))
@@ -103,13 +107,13 @@
      [:input {:type "button"
               :value "START"
               :on-click #(start-game)}]]
-    [:div {:id "startscreen"}]))
+    [:div {:id "instructions"}]))
 
 (defn get-gameover []
   [:div {:id "gameover"}
    (if (= (get @app-state :gameover) 1)
      [:div
-      [:p "GAME OVER"]
+      [:h1 "GAME OVER"]
       [:p (str "Result: " (get @app-state :points))]
       [:input {:type "button"
                :value "AGAIN"
@@ -135,9 +139,9 @@
     [:div {:id "buttons"}]))
 
 (defn component []
-  [:div {:id "component"}
-   (get-highscore)
+  [:div {:id "component" :class (get @app-state :color)}
    (get-current-score)
+   (get-highscore)
    (get-startscreen)
    (get-instructions)
    (get-gameover)
