@@ -5,8 +5,10 @@
   --darker-green: #4da976;
   --main-red: #b95141;
   --darker-red: #973b2e;
-  --main-blue: #6c8fcc;
-  --darker-blue: #4179b9;
+  --main-blue: #5cdb95;
+  --darker-blue: #4da976;
+  /* --main-blue: #6c8fcc; */
+  /* --darker-blue: #4179b9; */
 }
 
 html,
@@ -117,4 +119,14 @@ p {
   border: 1px solid black;
   border-radius: 5px;
   background: white;
+}
+
+input[type='button'] {
+  border: none;
+  color: grey;
+  padding: 12px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  /* background-image: url('http://alexfeds.com/wp-content/uploads/2018/04/save_icon.svg'); */
+  background-repeat: repeat-y;
 }
