@@ -54,13 +54,13 @@
 (defn end-game []
   (println "gameover")
   (swap! app-state assoc :pair [])
-  (swap! app-state assoc :highscore (get @app-state :points))
-  ; (swap! app-state assoc :points -1)
+  (if (> (get @app-state :points) (get @app-state :highscore))
+    (swap! app-state assoc :highscore (get @app-state :points)))
   (swap! app-state assoc :gameover 1))
 
 (defn start-over []
-  (replace-current-pair)
   (swap! app-state assoc :points -1)
+  (replace-current-pair)
   (swap! app-state assoc :gameover 0))
 
 ; getters/renderers
