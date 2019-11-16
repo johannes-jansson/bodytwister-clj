@@ -1,13 +1,27 @@
 /* some style */
-body {
-  background-color: #EEEEEE;
+
+:root {
+  --main-green: #5cdb95;
+  --darker-green: #4da976;
+  --main-red: #b95141;
+  --darker-red: #973b2e;
 }
-h1, h2, h3, h4, h5, p {
-  color: #333333;
+
+body {
+  background: linear-gradient(0deg, var(--darker-green) 0%, var(--main-green) 30%, var(--main-green) 100%);
+  /* background: linear-gradient(0deg, var(--darker-red) 0%, var(--main-red) 30%, var(--main-red) 100%); */
+  width: 100%;
+  height: 100%;
+}
+
+html {
+  width: 100%;
+  height: 100%;
 }
 
 p {
   font-size: 2em;
+  color: #333333;
 }
 
 #highscore {
@@ -26,7 +40,6 @@ p {
   position: absolute;
   top: 50%;
   left: 50%;
-  right: 50%;
 }
 
 #buttons {
@@ -35,7 +48,9 @@ p {
   left: 50%;
 }
 
-#first, #middle, #last {
+#first,
+#middle,
+#last {
   float: left;
   font-size: 4em;
 }
