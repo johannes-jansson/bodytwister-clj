@@ -66,7 +66,7 @@
   (println "gameover")
   (swap! app-state assoc :pair [])
   (swap! app-state assoc :highscore (get @app-state :points))
-  (swap! app-state assoc :points 0))
+  (swap! app-state assoc :points -1))
 
 (defn component []
   [:div {:id "component"}
