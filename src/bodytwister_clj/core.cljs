@@ -32,6 +32,7 @@
                       :highscore 0
                       :gameover 0
                       :started 0
+                      :instructions 0
                       :pair []}))
 
 ; functions for updating the pair
@@ -48,7 +49,12 @@
 ; app transitions
 (defn start-game []
   (replace-current-pair)
+  (swap! app-state assoc :instructions 0)
   (swap! app-state assoc :started 1)
+  )
+
+(defn show-instructions []
+  (swap! app-state assoc :instructions 1)
   )
 
 (defn end-game []
@@ -78,10 +84,22 @@
          (str (get @app-state :points)))]])
 
 (defn get-startscreen []
-  (if (= (get @app-state :started) 0)
+  (if (and (= (get @app-state :started) 0) (= (get @app-state :instructions) 0))
     [:div {:id "startscreen"}
      [:p "BODYTWISTER"]
-     [:a {:href ""} "Hur spelar man?"]
+     [:input {:type "button"
+              :value "INSTRUCTIONS"
+              :on-click #(show-instructions)}]
+     [:input {:type "button"
+              :value "START"
+              :on-click #(start-game)}]]
+    [:div {:id "startscreen"}]))
+
+(defn get-instructions []
+  (if (= (get @app-state :instructions) 1)
+    [:div {:id "instructions"}
+     [:h1 "Såhär spelar du"]
+     [:p "Lorem ipsum dolor sit amet"]
      [:input {:type "button"
               :value "START"
               :on-click #(start-game)}]]
@@ -121,6 +139,7 @@
    (get-highscore)
    (get-current-score)
    (get-startscreen)
+   (get-instructions)
    (get-gameover)
    (get-current-pair)
    (get-buttons)])
