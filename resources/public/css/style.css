@@ -6,6 +6,10 @@ h1, h2, h3, h4, h5, p {
   color: #333333;
 }
 
+p {
+  font-size: 2em;
+}
+
 #highscore {
   position: absolute;
   top: 1em;
@@ -18,14 +22,20 @@ h1, h2, h3, h4, h5, p {
   left: 1em;
 }
 
-#pair {
+#current-pair {
   position: absolute;
   top: 50%;
   left: 50%;
+  right: 50%;
 }
 
 #buttons {
   position: absolute;
   bottom: 1em;
   left: 50%;
+}
+
+#first, #middle, #last {
+  float: left;
+  font-size: 4em;
 }

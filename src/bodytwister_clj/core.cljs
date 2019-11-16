@@ -3,8 +3,6 @@
 
 (enable-console-print!)
 
-; (println "This text is printed from src/bodytwister-clj/core.cljs. Go ahead and edit it and see reloading in action.")
-
 (def parts (list "hand"
                  "hand"
                  "armbåge"
@@ -36,20 +34,23 @@
 
 (defn get-current-pair []
   (if (= (count (get @app-state :pair)) 0)
-    (str "")
-    (str (get (get @app-state :pair) 0)
-         " mot "
-         (get (get @app-state :pair) 1))))
+    [:div {:id "current-pair"}]
+    [:div {:id "current-pair"}
+     [:div {:id "first"} (get (get @app-state :pair) 0)]
+     [:div {:id "middle"} " mot "]
+     [:div {:id "last"} (get (get @app-state :pair) 1)]]))
 
 (defn get-current-score []
-  (if (= (get @app-state :points) -1)
-    (str "Poäng: -")
-    (str "Poäng: " (get @app-state :points))))
+  [:p (str "Poäng: "
+           (if (= (get @app-state :points) -1)
+             (str "-")
+             (str (get @app-state :points))))])
 
 (defn get-highscore []
-  (if (= (get @app-state :highscore) 0)
-    (str "Highscore: -")
-    (str "Highscore: " (get @app-state :highscore))))
+  [:p (str "Highscore: "
+           (if (= (get @app-state :highscore) 0)
+             (str "-")
+             (str(get @app-state :highscore))))])
 
 (defn generate-pair []
   "Generates a new random pair from parts list"
@@ -65,14 +66,13 @@
   (println "gameover")
   (swap! app-state assoc :pair [])
   (swap! app-state assoc :highscore (get @app-state :points))
-  (swap! app-state assoc :points 0)
-  )
+  (swap! app-state assoc :points 0))
 
 (defn component []
-  [:div
+  [:div {:id "component"}
    [:div {:id "highscore"} (get-highscore)]
    [:div {:id "score"} (get-current-score)]
-   [:div {:id "pair"} (get-current-pair)]
+   (get-current-pair)
    [:div {:id "buttons"}
     [:input {:type "button"
              :value "NEXT"
