@@ -85,21 +85,20 @@
 ; Methods for getting app states and rendering web elements
 (defn get-current-score []
   [:div {:id "score"}
-   [:p (if (= (deref-atom :points) -1)
-         (str "-")
-         (str (deref-atom :points)))]])
+   (if (not= (deref-atom :points) -1)
+         [:p (deref-atom :points)])])
 
 (defn get-highscore []
   [:div {:id "highscore"}
-   [:p (str "Highscore: "
-            (if (= (deref-atom :highscore) 0)
-              (str "-")
-              (str(deref-atom :highscore))))]])
+   (if (not= (deref-atom :highscore) 0)
+     [:p 
+      [:img {:src "assets/star.svg"}]
+      (deref-atom :highscore)])])
 
 (defn get-startscreen []
   (if (and (= (deref-atom :started) 0) (= (deref-atom :instructions) 0))
     [:div {:id "startscreen"}
-     [:p "BODYTWISTER"] ]
+     [:p "BODYTWISTER"]]
     [:div {:id "startscreen"}]))
 
 (defn get-instructions []
