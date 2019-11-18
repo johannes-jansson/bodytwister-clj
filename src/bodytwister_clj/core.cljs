@@ -99,35 +99,22 @@
 (defn get-startscreen []
   (if (and (= (deref-atom :started) 0) (= (deref-atom :instructions) 0))
     [:div {:id "startscreen"}
-     [:p "BODYTWISTER"]
-     [:input {:type "button"
-              :value "INSTRUCTIONS"
-              :on-click #(show-instructions)}]
-     [:input {:type "button"
-              :value "START"
-              :on-click #(start-game)}]]
+     [:p "BODYTWISTER"] ]
     [:div {:id "startscreen"}]))
 
 (defn get-instructions []
   (if (= (deref-atom :instructions) 1)
     [:div {:id "instructions"}
      [:h1 "Såhär spelar du"]
-     [:p "Lorem ipsum dolor sit amet"]
-     [:input {:type "button"
-              :value "START"
-              :on-click #(start-game)}]]
+     [:p "Lorem ipsum dolor sit amet"]]
     [:div {:id "instructions"}]))
 
 (defn get-gameover []
-   (if (= (deref-atom :gameover) 1)
-     [:div {:id "gameover"}
-      [:h1 "GAME OVER"]
-      [:p (str "Result: " (deref-atom :points))]
-      [:input {:type "button"
-               :value "AGAIN"
-               :on-click #(start-over)}]]
-     [:div {:id "gameover"}]
-     ))
+  (if (= (deref-atom :gameover) 1)
+    [:div {:id "gameover"}
+     [:h1 "GAME OVER"]
+     [:p (str "Result: " (deref-atom :points))]]
+    [:div {:id "gameover"}]))
 
 (defn get-current-pair []
   (if (= (count (deref-atom :pair)) 0)
@@ -137,16 +124,48 @@
      [:div {:id "middle"} " mot "]
      [:div {:id "last"} (nth (deref-atom :pair) 1)]]))
 
+(defn get-startscreen-buttons []
+  (println "startscreen-buttons")
+  [:div {:id "buttons"}
+   [:input {:type "button"
+            :value "INSTRUCTIONS"
+            :on-click #(show-instructions)}]
+   [:input {:type "button"
+            :value "START"
+            :on-click #(start-game)}]])
+
+(defn get-instructions-buttons []
+  (println "instructions-buttons")
+  [:div {:id "buttons"}
+   [:input {:type "button"
+            :value "START"
+            :on-click #(start-game)}]])
+
+(defn get-ongoing-buttons []
+  (println "ongoing-buttons")
+  [:div {:id "buttons"}
+   [:input {:type "button"
+            :value "NEXT"
+            :on-click #(replace-current-pair)}]
+   [:input {:type "button"
+            :value "FAIL"
+            :on-click #(end-game)}]])
+
+(defn get-gameover-buttons []
+  (println "gameover-buttons")
+  [:div {:id "buttons"}
+   [:input {:type "button"
+            :value "AGAIN"
+            :on-click #(start-over)}]])
+
 (defn get-buttons []
-  (if (and (= (deref-atom :gameover) 0)(= (deref-atom :started) 1))
-    [:div {:id "buttons"}
-     [:input {:type "button"
-              :value "NEXT"
-              :on-click #(replace-current-pair)}]
-     [:input {:type "button"
-              :value "FAIL"
-              :on-click #(end-game)}]]
-    [:div {:id "buttons"}]))
+  (if (= (deref-atom :instructions) 1)
+    (get-instructions-buttons)
+    (if (= (deref-atom :started) 0) 
+      (get-startscreen-buttons)
+      (if (= (deref-atom :gameover) 1)
+        (get-gameover-buttons)
+        (get-ongoing-buttons)))))
 
 ; Main app component
 (defn component []
