@@ -84,12 +84,12 @@
 
 ; Methods for getting app states and rendering web elements
 (defn get-current-score []
-  [:div {:id "score"}
+  [:div#score
    (if (not= (deref-atom :points) -1)
          [:p (deref-atom :points)])])
 
 (defn get-highscore []
-  [:div {:id "highscore"}
+  [:div#highscore
    (if (not= (deref-atom :highscore) 0)
      [:p 
       [:img {:src "assets/star.svg"}]
@@ -97,35 +97,35 @@
 
 (defn get-startscreen []
   (if (and (= (deref-atom :started) 0) (= (deref-atom :instructions) 0))
-    [:div {:id "startscreen"}
+    [:div#startscreen
      [:p "BODYTWISTER"]]
-    [:div {:id "startscreen"}]))
+    [:div#startscreen]))
 
 (defn get-instructions []
   (if (= (deref-atom :instructions) 1)
-    [:div {:id "instructions"}
+    [:div#instructions
      [:h1 "Såhär spelar du"]
      [:p "Lorem ipsum dolor sit amet"]]
-    [:div {:id "instructions"}]))
+    [:div#instructions]))
 
 (defn get-gameover []
   (if (= (deref-atom :gameover) 1)
-    [:div {:id "gameover"}
+    [:div#gameover
      [:h1 "GAME OVER"]
      [:p (str "Result: " (deref-atom :points))]]
-    [:div {:id "gameover"}]))
+    [:div#gameover]))
 
 (defn get-current-pair []
   (if (= (count (deref-atom :pair)) 0)
-    [:div {:id "current-pair"}]
-    [:div {:id "current-pair"}
-     [:div {:id "first"} (nth (deref-atom :pair) 0)]
-     [:div {:id "middle"} " mot "]
-     [:div {:id "last"} (nth (deref-atom :pair) 1)]]))
+    [:div#current-pair]
+    [:div#current-pair
+     [:div#first (nth (deref-atom :pair) 0)]
+     [:div#middle " mot "]
+     [:div#last (nth (deref-atom :pair) 1)]]))
 
 (defn get-startscreen-buttons []
   (println "startscreen-buttons")
-  [:div {:id "buttons"}
+  [:div#buttons
    [:input {:type "button"
             :value "INSTRUCTIONS"
             :on-click #(show-instructions)}]
@@ -135,14 +135,14 @@
 
 (defn get-instructions-buttons []
   (println "instructions-buttons")
-  [:div {:id "buttons"}
+  [:div#buttons
    [:input {:type "button"
             :value "START"
             :on-click #(start-game)}]])
 
 (defn get-ongoing-buttons []
   (println "ongoing-buttons")
-  [:div {:id "buttons"}
+  [:div#buttons
    [:input {:type "button"
             :value "NEXT"
             :on-click #(replace-current-pair)}]
@@ -152,7 +152,7 @@
 
 (defn get-gameover-buttons []
   (println "gameover-buttons")
-  [:div {:id "buttons"}
+  [:div#buttons
    [:input {:type "button"
             :value "AGAIN"
             :on-click #(start-over)}]])
@@ -168,7 +168,7 @@
 
 ; Main app component
 (defn component []
-  [:div {:id "component" :class (deref-atom :color)}
+  [:div#component {:class (deref-atom :color)}
    (get-current-score)
    (get-highscore)
    (get-startscreen)
