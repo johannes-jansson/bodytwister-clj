@@ -104,8 +104,10 @@
 (defn get-instructions []
   (if (= (deref-atom :instructions) 1)
     [:div#instructions
-     [:h1 "Såhär spelar du"]
-     [:p "Lorem ipsum dolor sit amet"]]
+     [:h1 "Förberedelser:"]
+     [:p "Ni behöver 2-99 spelare och lappar (t.ex. en kortlek). Dela in er i två eller flera lag om ni vill. Eller inte, om ni inte vill. Det är bra om någon är dedikerad spel-ledare, men annars löser ni säkert det också. "]
+     [:h1 "Så spelar ni:"]
+     [:p "Tryck på starta. Ni kommer att få en kroppsdels-kombination. Inom laget ska en eller två spelare placera en lapp mellan dessa kroppsdelar. Fortsätt med detta tills ett lag inte klarar av det, eller tappar någon lapp."]]
     [:div#instructions]))
 
 (defn get-gameover []
