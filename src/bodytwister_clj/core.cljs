@@ -2,6 +2,7 @@
   (:require [reagent.core :as reagent :refer [atom]]))
 
 (enable-console-print!)
+;(println "end-game")
 
 (def parts (list "hand"
                  "hand"
@@ -34,61 +35,69 @@
                       :started 0
                       :color "blue"
                       :instructions 0
-                      :pair []}))
+                      :pair (list)}))
 
-; functions for updating the pair
+
+; This method handles all state modification
+(defn assoc-atom [key, function]
+  "Associate atom key with new value defined by function"
+  (swap! app-state assoc key function))
+
+; This method handles all state getting
+(defn deref-atom [key]
+  "Dereferences the atom value for key"
+  (get @app-state key))
+ 
+
 (defn generate-pair []
   "Generates a new random pair from parts list"
-  [(rand-nth parts) (rand-nth parts)])
+  (take 2 (shuffle parts)))
 
 (defn replace-current-pair []
-  (swap! app-state assoc :pair (generate-pair))
-  (swap! app-state assoc :points (+ (get @app-state :points) 1))
-  ; (swap! (app-state :points) inc)
+  "Replaces the current pair and updates points"
+  (assoc-atom :pair (generate-pair))
+  (assoc-atom :points (+ (deref-atom :points) 1))
   )
 
 ; app transitions
 (defn start-game []
   (replace-current-pair)
-  (swap! app-state assoc :instructions 0)
-  (swap! app-state assoc :color "green")
-  (swap! app-state assoc :started 1)
-  )
+  (assoc-atom :instructions 0)
+  (assoc-atom :color "green")
+  (assoc-atom :started 1))
 
 (defn show-instructions []
-  (swap! app-state assoc :instructions 1)
-  )
+  (assoc-atom :instructions 1))
 
 (defn end-game []
-  (println "gameover")
-  (swap! app-state assoc :pair [])
-  (swap! app-state assoc :color "red")
-  (if (> (get @app-state :points) (get @app-state :highscore))
-    (swap! app-state assoc :highscore (get @app-state :points)))
-  (swap! app-state assoc :gameover 1))
+  (assoc-atom :pair [])
+  (assoc-atom :color "red")
+  (if (> (deref-atom :points) (deref-atom :highscore))
+    (assoc-atom :highscore (deref-atom :points)))
+  (assoc-atom :gameover 1))
 
 (defn start-over []
-  (swap! app-state assoc :points -1)
-  (swap! app-state assoc :color "green")
+  (assoc-atom :points -1)
+  (assoc-atom :color "green")
   (replace-current-pair)
-  (swap! app-state assoc :gameover 0))
+  (assoc-atom :gameover 0))
 
-; getters/renderers
+; Methods for getting app states and rendering web elements
 (defn get-current-score []
   [:div {:id "score"}
-   [:p (if (= (get @app-state :points) -1)
+   [:p (if (= (deref-atom :points) -1)
          (str "-")
-         (str (get @app-state :points)))]])
+         (str (deref-atom :points)))]])
 
 (defn get-highscore []
   [:div {:id "highscore"}
    [:p (str "Highscore: "
-            (if (= (get @app-state :highscore) 0)
+            (if (= (deref-atom :highscore) 0)
               (str "-")
-              (str(get @app-state :highscore))))]])
+              (str(deref-atom :highscore))))]])
 
 (defn get-startscreen []
-  (if (and (= (get @app-state :started) 0) (= (get @app-state :instructions) 0))
+  (if (and (= (deref-atom :started) 0) (= (deref-atom :instructions) 0))
     [:div {:id "startscreen"}
      [:p "BODYTWISTER"]
      [:input {:type "button"
@@ -100,7 +109,7 @@
     [:div {:id "startscreen"}]))
 
 (defn get-instructions []
-  (if (= (get @app-state :instructions) 1)
+  (if (= (deref-atom :instructions) 1)
     [:div {:id "instructions"}
      [:h1 "Såhär spelar du"]
      [:p "Lorem ipsum dolor sit amet"]
@@ -110,25 +119,26 @@
     [:div {:id "instructions"}]))
 
 (defn get-gameover []
-  [:div {:id "gameover"}
-   (if (= (get @app-state :gameover) 1)
-     [:div
+   (if (= (deref-atom :gameover) 1)
+     [:div {:id "gameover"}
       [:h1 "GAME OVER"]
-      [:p (str "Result: " (get @app-state :points))]
+      [:p (str "Result: " (deref-atom :points))]
       [:input {:type "button"
                :value "AGAIN"
-               :on-click #(start-over)}]])])
+               :on-click #(start-over)}]]
+     [:div {:id "gameover"}]
+     ))
 
 (defn get-current-pair []
-  (if (= (count (get @app-state :pair)) 0)
+  (if (= (count (deref-atom :pair)) 0)
     [:div {:id "current-pair"}]
     [:div {:id "current-pair"}
-     [:div {:id "first"} (get (get @app-state :pair) 0)]
+     [:div {:id "first"} (nth (deref-atom :pair) 0)]
      [:div {:id "middle"} " mot "]
-     [:div {:id "last"} (get (get @app-state :pair) 1)]]))
+     [:div {:id "last"} (nth (deref-atom :pair) 1)]]))
 
 (defn get-buttons []
-  (if (and (= (get @app-state :gameover) 0)(= (get @app-state :started) 1))
+  (if (and (= (deref-atom :gameover) 0)(= (deref-atom :started) 1))
     [:div {:id "buttons"}
      [:input {:type "button"
               :value "NEXT"
@@ -138,8 +148,9 @@
               :on-click #(end-game)}]]
     [:div {:id "buttons"}]))
 
+; Main app component
 (defn component []
-  [:div {:id "component" :class (get @app-state :color)}
+  [:div {:id "component" :class (deref-atom :color)}
    (get-current-score)
    (get-highscore)
    (get-startscreen)
